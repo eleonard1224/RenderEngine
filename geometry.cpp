@@ -187,6 +187,26 @@ CameraMesh::CameraMesh(const string& mesh_file, double theta_x, double theta_y, 
             faces[i].vertices[j].coordinates[2] = Plocal[2][0];
         }
     }
+
+    // Fill in camera_points
+    camera_points = new double**[n_faces];
+    for(i = 0; i < n_faces; i++) {
+        camera_points[i] = new double*[3];
+        for(j = 0; j < 3; j++) {
+            camera_points[i][j] = new double[3];
+        }
+    }
+}
+
+CameraMesh::~CameraMesh() {
+    int i, j;
+    for(i = 0; i < n_faces; i++) {
+        for(j = 0; j < 3; j++) {
+            delete[] camera_points[i][j];
+        }
+        delete[] camera_points[i];
+    }
+    delete[] camera_points;
 }
 
 void CameraMesh::print_scaled_mesh() {

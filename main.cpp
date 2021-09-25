@@ -2,6 +2,7 @@
 #include<iostream>
 #include "geometry.h"
 #include "matrix.h"
+#include "camera.h"
 
 using namespace std;
 
@@ -55,7 +56,9 @@ int main() {
 
     string mesh_file("meshes/square.csv");
     CameraMesh camera_mesh(mesh_file, 1.1093189716339111, 0.0, 0.8149273890119403, 7.358890056610107, -6.925790786743164, 4.958309173583984);
-    camera_mesh.print_scaled_mesh();
+    // camera_mesh.print_scaled_mesh();
+
+    Camera camera(1,1);
 
     return 0;
 }
