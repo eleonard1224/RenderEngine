@@ -2,15 +2,26 @@
 #ifndef CAMERA
 #define CAMERA
 
+
+#include <iostream>
+#include <cmath>
+// #include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+// #include <opencv/highgui.h>
+#include <opencv2/highgui/highgui.hpp>
 #include "geometry.h"
+
+using namespace cv;
 
 class Camera {
 private:
-    double canvas_x;
-    double canvas_y;
+    double canvas_width;
+    double canvas_height;
 public:
-    Camera(double canvas_x, double canvas_y);
-    void render(const CameraMesh& camera_mesh);
+    Camera(double canvas_width, double canvas_height);
+    void render(const CameraMesh& camera_mesh, int pixel_width, int pixel_height);
 };
 
 #endif

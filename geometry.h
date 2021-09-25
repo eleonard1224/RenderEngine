@@ -44,7 +44,7 @@ public:
     CameraMesh(const string& mesh_file, double theta_x, double theta_y, double theta_z, 
         double delta_x, double delta_y, double delta_z);
     ~CameraMesh();
-    void print_scaled_mesh();
+    void print_camera_points();
     Matrix T;
     double ***camera_points;
 };
