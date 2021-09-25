@@ -7,6 +7,7 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <cmath>
 #include "matrix.h"
 
 using std::string;
@@ -40,7 +41,10 @@ public:
 
 class CameraMesh: public Mesh {
 public:
-    CameraMesh(const string& mesh_file, double Rx, double Ry, double Rz, double Tx, double Ty, double Tz);
+    CameraMesh(const string& mesh_file, double theta_x, double theta_y, double theta_z, 
+        double delta_x, double delta_y, double delta_z);
+    void print_scaled_mesh();
+    Matrix T;
 };
 
 #endif
