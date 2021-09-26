@@ -55,10 +55,10 @@ int main() {
     // M[3][0] = 0.0; M[3][1] = 0.0; M[3][2] = 0.0; M[3][3] = 1.0;
 
     string mesh_file("meshes/monkey.csv");
-    CameraMesh camera_mesh(mesh_file, 0.90, 0.75, 0.853, 7.358890056610107, -6.925790786743164, 4.958309173583984);
+    CameraMesh camera_mesh(mesh_file, 0.90, 0.70, 0.6, 7.358890056610107, -6.925790786743164, 4.958309173583984);
     // camera_mesh.print_camera_points();
 
-    Camera camera(1,1);
+    Camera camera(0.5,0.5);
     camera.render(camera_mesh, 512, 512);
 
     return 0;
