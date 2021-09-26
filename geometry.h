@@ -9,7 +9,6 @@
 #include <map>
 #include <cmath>
 #include "matrix.h"
-
 using std::string;
 
 class Vertex {

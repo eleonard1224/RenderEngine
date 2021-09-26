@@ -28,15 +28,11 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
             raster_points[i][j][0] = int(floor(normalized_x*pixel_width_d));
             normalized_y = (camera_mesh.camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
             raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height_d));
-            // std::cout << "x = " << raster_points[i][j][0] << ", y = " << raster_points[i][j][1] << std::endl; 
         }
     }
 
     // Write out render to file
     Mat img(pixel_width, pixel_height, CV_8UC3, Scalar(0,0,0));
-    // cv::Mat mat = cv::Mat::zeros(5, 5, CV_32FC(16));
-    // Point p1(0, 0), p2(100, 0);
-    // line(img, p1, p2, Scalar(255, 255, 255), 2, LINE_AA);
     int thickness = 1;
     for(i = 0; i < n_faces; i++) {
             Point p0(raster_points[i][0][0], raster_points[i][0][1]);

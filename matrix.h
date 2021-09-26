@@ -9,7 +9,6 @@ public:
     void print_matrix();
     Matrix operator * (const Matrix& factor) const;
     double* operator[]( int index ) const;
-
     int n_rows;
     int n_cols;
     double **matrix;

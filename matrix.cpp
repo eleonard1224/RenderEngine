@@ -1,7 +1,6 @@
 // Implementation of Matrix class
 #include <iostream>
 #include "matrix.h"
-
 using namespace std;
 
 // Matrix definitions

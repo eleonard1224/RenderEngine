@@ -5,18 +5,12 @@ using namespace std;
 
 // Vertex definitions
 Vertex::Vertex() {
-    // cout << "Default Vertex Constructor" << endl;
     coordinates[0] = 0.0; coordinates[1] = 0.0; coordinates[2] = 0.0;
 }
 
 Vertex::Vertex(double x, double y, double z) {
-    // cout << "Vertex Constructor" << endl;
     coordinates[0] = x; coordinates[1] = y; coordinates[2] = z;
 }
-
-// Vertex::~Vertex() {
-//     cout << "Vertex Destructor" << endl;
-// }
 
 // Face Definitions
 Face::Face() {
@@ -25,13 +19,8 @@ Face::Face() {
 }
 
 Face::Face(const Vertex& v0, const Vertex& v1, const Vertex& v2) {
-    // cout << "Face Constructor" << endl;
     vertices[0] = v0; vertices[1] = v1; vertices[2] = v2;
 }
-
-// Face::~Face() {
-//     cout << "Face Destructor Called" << endl;
-// }
 
 // Mesh definitions
 Mesh::Mesh(const string& mesh_file): mesh_file(mesh_file) {
@@ -62,8 +51,6 @@ Mesh::Mesh(const string& mesh_file): mesh_file(mesh_file) {
 
     // Now read mesh information into faces
     n_faces = csv_contents.size();
-    // cout << "n_faces = " << n_faces << endl;
-    // faces = NULL;
     faces = new Face[n_faces];
     int i, j;
     for(i = 0; i < n_faces; i++) {
@@ -106,28 +93,6 @@ void Mesh::print_mesh() {
     }
 }
 
-// CameraMesh definitions
-// CameraMesh::CameraMesh(const string& mesh_file, const Matrix& M): Mesh(mesh_file) {
-
-//     Matrix Minv = inverse(M);
-//     // Matrix Plocal(1,M.n_cols);
-//     Matrix Pworld(M.n_rows,1);
-//     // Loop through vertices and transform them from world coordinates to local coordinates
-//     int i, j;
-//     for(i = 0; i < n_faces; i++) {
-//         for(j = 0; j < 3; j++) {
-//             Pworld[0][0] = faces[i].vertices[j].coordinates[0];
-//             Pworld[1][0] = faces[i].vertices[j].coordinates[1];
-//             Pworld[2][0] = faces[i].vertices[j].coordinates[2];
-//             Pworld[3][0] = 0;
-//             Matrix Plocal = Minv*Pworld;
-//             faces[i].vertices[j].coordinates[0] = Plocal[0][0];
-//             faces[i].vertices[j].coordinates[1] = Plocal[1][0];
-//             faces[i].vertices[j].coordinates[2] = Plocal[2][0];
-//         }
-//     }
-// }
-
 CameraMesh::CameraMesh(const string& mesh_file, double theta_x, double theta_y, double theta_z, 
     double delta_x, double delta_y, double delta_z): Mesh(mesh_file), T(4,4) {
 
@@ -149,29 +114,15 @@ CameraMesh::CameraMesh(const string& mesh_file, double theta_x, double theta_y, 
     Rz[2][0] = 0.0; Rz[2][1] = 0.0; Rz[2][2] = 1.0;
 
     Matrix R = Rx*Ry*Rz;
-    // R.print_matrix();
 
     // Fill in camera transformation matrix T
-    // int i, j;
     T[0][0] = R[0][0]; T[0][1] = R[0][1]; T[0][2] = R[0][2]; T[0][3] = delta_x;
     T[1][0] = R[1][0]; T[1][1] = R[1][1]; T[1][2] = R[1][2]; T[1][3] = delta_y;
     T[2][0] = R[2][0]; T[2][1] = R[2][1]; T[2][2] = R[2][2]; T[2][3] = delta_z;
     T[3][0] = 0.0; T[3][1] = 0.0; T[3][2] = 0.0; T[3][3] = 1.0;
-    // for(i = 0; i < 4; i++) {
-    //     for(j = 0; j < 4; j++) {
-    //         if(abs(T[i][j]) < 1.0e-10) {
-    //             T[i][j] = 0.0;
-    //         }
-    //     }
-    // }
-    // T.print_matrix();
-
-
 
     // Transform the vertices of the mesh from world space to camera space
     Matrix Tinv = inverse(T);
-    // Tinv.print_matrix();
-    // Matrix Plocal(1,M.n_cols);
     Matrix Pworld(T.n_rows,1);
     // Loop through vertices and transform them from world coordinates to local coordinates
     int i, j;
