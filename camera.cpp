@@ -4,7 +4,7 @@
 // Camera definitions
 Camera::Camera(double canvas_width, double canvas_height): canvas_width(canvas_width), canvas_height(canvas_height) {};
 
-void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_height) {
+void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_height, string output_file) {
 
     // Allocate raster_points
     int i, j;
@@ -43,7 +43,7 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
             line(img, p2, p0, Scalar(255, 255, 255), thickness, LINE_AA);
     }
     Output output_img;
-    output_img.write_img_file("monkey.png",img);
+    output_img.write_img_file(output_file,img);
     // imwrite("monkey.png",  img);
 
     // De-allocate raster_points

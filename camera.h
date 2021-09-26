@@ -18,6 +18,6 @@ private:
     double canvas_height;
 public:
     Camera(double canvas_width, double canvas_height);
-    void render(const CameraMesh& camera_mesh, int pixel_width, int pixel_height);
+    void render(const CameraMesh& camera_mesh, int pixel_width, int pixel_height, string output_file);
 };
 #endif
