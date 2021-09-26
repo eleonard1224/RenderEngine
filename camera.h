@@ -9,6 +9,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "geometry.h"
+#include "io.h"
 using namespace cv;
 
 class Camera {
