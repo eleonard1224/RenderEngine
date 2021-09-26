@@ -9,6 +9,7 @@
 #include <map>
 #include <cmath>
 #include "matrix.h"
+#include "io.h"
 using std::string;
 
 class Vertex {
@@ -31,9 +32,8 @@ class Mesh {
 public:
     Mesh(const string& mesh_file);
     ~Mesh();
-    string readFileIntoString(const string& path);
+    // string readFileIntoString(const string& path);
     void print_mesh();
-    string mesh_file;
     int n_faces;
     Face *faces;
 };

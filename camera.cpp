@@ -42,8 +42,8 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
             line(img, p1, p2, Scalar(255, 255, 255), thickness, LINE_AA);
             line(img, p2, p0, Scalar(255, 255, 255), thickness, LINE_AA);
     }
-    Output output;
-    output.write_to_file("monkey.png",img);
+    Output output_img;
+    output_img.write_img_file("monkey.png",img);
     // imwrite("monkey.png",  img);
 
     // De-allocate raster_points
