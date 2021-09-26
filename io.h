@@ -18,7 +18,8 @@ using namespace cv;
 class Input {
 public:
 void read_inputs(const string& input_file, string& mesh_file, double& Rx, double& Ry, double& Rz, 
-    double& Tx, double& Ty, double& Tz, string& output_file);
+    double& Tx, double& Ty, double& Tz, string& output_file, double& canvas_width, double& canvas_height, 
+    int& pixel_width, int& pixel_height);
     std::map<int, std::vector<string>> read_mesh(const string& mesh_file);
     string readFileIntoString(const string& path);
 };
