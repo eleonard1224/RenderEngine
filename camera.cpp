@@ -44,7 +44,6 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
     }
     Output output_img;
     output_img.write_img_file(output_file,img);
-    // imwrite("monkey.png",  img);
 
     // De-allocate raster_points
     for(i = 0; i < n_faces; i++) {
