@@ -18,18 +18,22 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
         }
     }
 
+    // // Calculate raster_points
+    // double normalized_x, normalized_y;
+    // double pixel_width_d = (double) pixel_width;
+    // double pixel_height_d = (double) pixel_height;
+    // for(i = 0; i < n_faces; i++) {
+    //     for(j = 0; j < 3; j++) {
+    //         normalized_x = (camera_mesh.camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
+    //         raster_points[i][j][0] = int(floor(normalized_x*pixel_width_d));
+    //         normalized_y = (camera_mesh.camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
+    //         raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height_d));
+    //     }
+    // }
+
     // Calculate raster_points
-    double normalized_x, normalized_y;
-    double pixel_width_d = (double) pixel_width;
-    double pixel_height_d = (double) pixel_height;
-    for(i = 0; i < n_faces; i++) {
-        for(j = 0; j < 3; j++) {
-            normalized_x = (camera_mesh.camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
-            raster_points[i][j][0] = int(floor(normalized_x*pixel_width_d));
-            normalized_y = (camera_mesh.camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
-            raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height_d));
-        }
-    }
+    calculate_raster_points(camera_mesh.camera_points, camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height);
+
 
     // Write out render to file
     Mat img(pixel_width, pixel_height, CV_8UC3, Scalar(0,0,0));
@@ -53,4 +57,18 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
         delete[] raster_points[i];
     }
     delete[] raster_points;
+}
+
+void Camera::calculate_raster_points(double ***camera_points, int n_faces, int ***raster_points, double pixel_width, double pixel_height) {
+
+    int i, j;
+    double normalized_x, normalized_y;
+    for(i = 0; i < n_faces; i++) {
+        for(j = 0; j < 3; j++) {
+            normalized_x = (camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
+            raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
+            normalized_y = (camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
+            raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
+        }
+    }
 }
