@@ -31,22 +31,11 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
     //     }
     // }
 
-    // Calculate raster_points
-    // calculate_raster_points(camera_mesh.camera_points, camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height);
 
-    // // Calculate raster_points using a single thread
-    // thread th(calculate_raster_points, camera_mesh.camera_points, camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height, canvas_width, canvas_height);
-    // th.join();
 
+    // Calculate and time raster_points using multiple threads
     auto start = high_resolution_clock::now();
-    // Calculate raster_points using multiple threads
     int n_threads = thread::hardware_concurrency();
-    // cout << "n_threads = " << n_threads << endl;
-    // cout << "n_threads = " << n_threads << endl;
-    // int start_faces[2] = {0,250};
-    // int end_faces[2] = {250,500};
-    // array<int, n_threads> start_faces;
-    // array<int, n_threads> end_faces;
     int *start_faces = new int[n_threads];
     int *end_faces = new int[n_threads];
     int n_faces_per_thread = camera_mesh.n_faces/n_threads;
