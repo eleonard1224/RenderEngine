@@ -38,9 +38,11 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
     // thread th(calculate_raster_points, camera_mesh.camera_points, camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height, canvas_width, canvas_height);
     // th.join();
 
+    auto start = high_resolution_clock::now();
     // Calculate raster_points using multiple threads
     int n_threads = thread::hardware_concurrency();
-    cout << "n_threads = " << n_threads << endl;
+    // cout << "n_threads = " << n_threads << endl;
+    // cout << "n_threads = " << n_threads << endl;
     // int start_faces[2] = {0,250};
     // int end_faces[2] = {250,500};
     // array<int, n_threads> start_faces;
@@ -54,17 +56,18 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
     }
     vector<thread> threads;
     for (i = 0; i < n_threads; i++) {
-        threads.push_back(thread(calculate_raster_points, camera_mesh.camera_points, start_faces[i], end_faces[i], raster_points, (double) pixel_width, (double) pixel_height, canvas_width, canvas_height));
+        threads.push_back(thread(&Camera::calculate_raster_points, this, camera_mesh.camera_points, start_faces[i], end_faces[i], raster_points, (double) pixel_width, (double) pixel_height));
     }
     for (auto &th : threads) {
         th.join();
     }
     // Loop over the remaining faces
-    calculate_raster_points(camera_mesh.camera_points, end_faces[n_threads-1], camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height, canvas_width, canvas_height);
+    calculate_raster_points(camera_mesh.camera_points, end_faces[n_threads-1], camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height);
     delete[] start_faces;
     delete[] end_faces;
-
-
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time to Calculate Raster Points (microseconds) = " << duration.count() << endl;
 
     // Write out render to file
     Mat img(pixel_width, pixel_height, CV_8UC3, Scalar(0,0,0));
@@ -90,16 +93,15 @@ void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_he
     delete[] raster_points;
 }
 
-void Camera::calculate_raster_points(double ***camera_points, int start_face, int end_face, int ***raster_points, double pixel_width, double pixel_height,
-    double canvas_width_, double canvas_height_) {
+void Camera::calculate_raster_points(double ***camera_points, int start_face, int end_face, int ***raster_points, double pixel_width, double pixel_height) {
 
     int i, j;
     double normalized_x, normalized_y;
     for(i = start_face; i < end_face; i++) {
         for(j = 0; j < 3; j++) {
-            normalized_x = (camera_points[i][j][0] + (canvas_width_/2.0))/canvas_width_; 
+            normalized_x = (camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
             raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
-            normalized_y = (camera_points[i][j][1] + (canvas_height_/2.0))/canvas_height_; 
+            normalized_y = (camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
             raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
         }
     }
