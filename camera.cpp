@@ -4,7 +4,7 @@
 // Camera definitions
 Camera::Camera(double canvas_width, double canvas_height): canvas_width(canvas_width), canvas_height(canvas_height) {};
 
-void Camera::render(const CameraMesh& camera_mesh, int pixel_width, int pixel_height, string output_file) {
+template <class MeshElement> void Camera::render(const CameraMesh<MeshElement>& camera_mesh, int pixel_width, int pixel_height, string output_file) {
 
     // Allocate raster_points
     int i, j;
