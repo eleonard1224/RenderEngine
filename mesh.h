@@ -14,15 +14,17 @@
 using namespace std;
 using std::string;
 
-////////////////////  Class Declarations /////////////////////////////////////
+
+//--------------- Class Declarations -----------------------------//
 
 template <class MeshElement> class Mesh {
 public:
     Mesh(const string& mesh_file);
-    ~Mesh();
+    // ~Mesh();
     void print_mesh();
     int n_faces;
-    MeshElement *faces;
+    // MeshElement *faces;
+    vector<MeshElement> faces;
 };
 
 template <class MeshElement> class CameraMesh: public Mesh<MeshElement> {
@@ -37,7 +39,7 @@ public:
     using Mesh<MeshElement>::faces;
 };
 
-////////////////////  Class Definitions /////////////////////////////////////
+//--------------- Class Definitions -----------------------------//
 
 // Mesh definitions
 template <class MeshElement> Mesh<MeshElement>::Mesh(const string& mesh_file) {
@@ -48,7 +50,8 @@ template <class MeshElement> Mesh<MeshElement>::Mesh(const string& mesh_file) {
 
     // Now read mesh information into faces
     n_faces = csv_contents.size();
-    faces = new MeshElement[n_faces];
+    // faces = new MeshElement[n_faces];
+    faces.insert(faces.end(), n_faces, Face());
     int i, j;
     for(i = 0; i < n_faces; i++) {
         for(j = 0; j < 3; j++) {
@@ -59,9 +62,9 @@ template <class MeshElement> Mesh<MeshElement>::Mesh(const string& mesh_file) {
     }
 }
 
-template <class MeshElement> Mesh<MeshElement>::~Mesh() {
-    delete[] faces;
-}
+// template <class MeshElement> Mesh<MeshElement>::~Mesh() {
+//     delete[] faces;
+// }
 
 template <class MeshElement> void Mesh<MeshElement>::print_mesh() {
 
