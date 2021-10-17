@@ -4,7 +4,7 @@ This repository contains code for a very basic render engine which displays the 
 The render engine incorporates multithreading on Lines 36-59 of `camera.cpp`.  To measure the speed-ups from multithreading, a high-poly version of the monkey mesh is stored in `meshes/monkey_high_polycount.csv` and the number of threads launched can be adjusted on Line 38 of `camera.cpp`.
 
 ## Compile Instructions
-`g++-7 main.cpp geometry.cpp matrix.cpp camera.cpp io.cpp -std=c++17 -o renderengine -I/usr/include/opencv4/ -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -pthread`
+`g++-7 main.cpp geometry.cpp matrix.cpp io.cpp -std=c++17 -o renderengine -I/usr/include/opencv4/ -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -pthread`
 
 ## Run Instructions
 `./renderengine inputs.csv`
