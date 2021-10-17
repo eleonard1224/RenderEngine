@@ -13,7 +13,6 @@
 using namespace std;
 using std::string;
 
-////////////////////  Class Declarations /////////////////////////////////////
 
 class Vertex {
 public:
