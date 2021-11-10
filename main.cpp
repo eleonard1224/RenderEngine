@@ -9,17 +9,26 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     /* Begin Testing */
-    // Copy Constructor
     Matrix A{2,2};
-    A[0][0] = 1.0; A[0][1] = 2.0; A[1][0] = 3.0; A[1][1] = 4.0;
-    Matrix B{A};
-    cout << "B[0][0] = " << B[0][0] << endl;
+    A[0][0] = 1.2; A[0][1] = 2.3; A[1][0] = 3.3; A[1][1] = 4.5;
 
-    // Copy assignment
-    Matrix C;
-    C = A;
+    // Copy Constructor
+    // Matrix B{A};
+    // cout << "B[1][1] = " << B[1][1] << endl;
 
+    // // Copy assignment
+    // Matrix C;
+    // C = A;
+    // cout << "C[1][1] = " << C[1][1] << endl;
 
+    // Move constructor
+    // Matrix D(move(A));
+    // cout << "D[1][1] = " << D[1][1] << endl;
+
+    // Move assignment
+    Matrix E;
+    E = move(A);
+    cout << "E[1][1] = " << E[1][1] << endl;
 
     /* End Testing */
 

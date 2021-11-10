@@ -2,14 +2,16 @@
 #ifndef MATRIX
 #define MATRIX
 
+#include <iostream>
+
 class Matrix {
 public:
     Matrix(); // Default constructor
     Matrix(int n_rows, int n_cols); // Parameterized constructor
     Matrix(const Matrix & mat); // Copy constructor
     Matrix & operator = (const Matrix & mat); // Copy assignment
-    Matrix(const Matrix && mat); // Move constructor
-    Matrix & operator = (const Matrix && mat); // Move assignment
+    Matrix(Matrix && mat); // Move constructor
+    Matrix & operator = (Matrix && mat); // Move assignment
     ~Matrix();
     void print_matrix();
     Matrix operator * (const Matrix& factor) const;

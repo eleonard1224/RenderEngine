@@ -14,6 +14,7 @@ Matrix::Matrix() {
 }
 
 Matrix::Matrix(int n_rows, int n_cols): n_rows(n_rows), n_cols(n_cols) {
+    cout << "Matrix(int n_rows, int n_cols)" << endl;
     matrix = new double*[n_rows];
     for(int i = 0; i < n_rows; i++) {
         matrix[i] = new double[n_cols];
@@ -28,40 +29,79 @@ Matrix::Matrix(const Matrix & mat) {
     matrix = new double*[n_rows];
     for(i = 0; i < n_rows; i++) {
         matrix[i] = new double[n_cols];
-    }
-
-    for(i = 0; i < n_rows; i++) {
         for(j = 0; j < n_cols; j++) {
-            matrix[i][j] = mat[i][j];
+            matrix[i][j] = mat.matrix[i][j];
         }
     }
 }
 
 Matrix & Matrix::operator = (const Matrix & mat) {
     cout << "operator = (const Matrix & mat)" << endl;
-    int i, j;
-    for(i = 0; i < n_rows; i++) {
-        delete [] matrix[i];
-    }
-    delete [] matrix;
-    n_rows = mat.n_rows;
-    n_cols = mat.n_cols;
-    matrix = new double*[n_rows];
-    for(i = 0; i < n_rows; i++) {
-        matrix[i] = new double[n_cols];
-    }
-    for(i = 0; i < n_rows; i++) {
-        for(j = 0; j < n_cols; j++) {
-            matrix[i][j] = mat[i][j];
+    if (this != &mat) {
+        int i, j;
+        for(i = 0; i < n_rows; i++) {
+            delete [] matrix[i];
+        }
+        delete [] matrix;
+        n_rows = mat.n_rows;
+        n_cols = mat.n_cols;
+        matrix = new double*[n_rows];
+        for(i = 0; i < n_rows; i++) {
+            matrix[i] = new double[n_cols];
+            for(j = 0; j < n_cols; j++) {
+                matrix[i][j] = mat.matrix[i][j];
+            }
         }
     }
     return *this;
 }
 
-Matrix::~Matrix() {
-    int i;
+Matrix::Matrix(Matrix && mat) {
+    cout << "Matrix(Matrix && mat)" << endl; 
+    n_rows = mat.n_rows;
+    n_cols = mat.n_cols;
+    int i, j;
+    matrix = new double*[n_rows];
     for(i = 0; i < n_rows; i++) {
-        delete[] matrix[i];
+        matrix[i] = new double[n_cols];
+        for(j = 0; j < n_cols; j++) {
+            matrix[i][j] = mat.matrix[i][j];
+        }
+        mat.matrix[i] = nullptr;
+    }
+    mat.matrix = nullptr;
+}
+
+Matrix & Matrix::operator = (Matrix && mat) {
+    cout << "operator = (Matrix && mat)" << endl; 
+    if (this != &mat) {
+        int i, j;
+        for(i = 0; i < n_rows; i++) {
+            delete [] matrix[i];
+        }
+        delete [] matrix;
+        n_rows = mat.n_rows;
+        n_cols = mat.n_cols;
+        matrix = new double*[n_rows];
+        for(i = 0; i < n_rows; i++) {
+            matrix[i] = new double[n_cols];
+            for(j = 0; j < n_cols; j++) {
+                matrix[i][j] = mat.matrix[i][j];
+            }
+            mat.matrix[i] = nullptr;
+        }
+        mat.matrix = nullptr;
+    }
+    return *this;
+}
+
+Matrix::~Matrix() {
+    cout << "~Matrix()" << endl;
+    int i;
+    if (matrix) {
+        for(i = 0; i < n_rows; i++) {
+            delete[] matrix[i];
+        }
     }
     delete[] matrix;
 }
