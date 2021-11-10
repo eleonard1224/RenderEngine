@@ -4,11 +4,58 @@
 using namespace std;
 
 // Matrix definitions
+
+Matrix::Matrix() {
+    cout << "Matrix()" << endl;    
+    n_rows = 1;
+    n_cols = 1;
+    matrix = new double *[n_rows];
+    matrix[0] = new double[n_cols];
+}
+
 Matrix::Matrix(int n_rows, int n_cols): n_rows(n_rows), n_cols(n_cols) {
     matrix = new double*[n_rows];
     for(int i = 0; i < n_rows; i++) {
         matrix[i] = new double[n_cols];
     }
+}
+
+Matrix::Matrix(const Matrix & mat) {
+    cout << "Matrix(const Matrix & mat)" << endl;
+    n_rows = mat.n_rows;
+    n_cols = mat.n_cols;
+    int i, j;
+    matrix = new double*[n_rows];
+    for(i = 0; i < n_rows; i++) {
+        matrix[i] = new double[n_cols];
+    }
+
+    for(i = 0; i < n_rows; i++) {
+        for(j = 0; j < n_cols; j++) {
+            matrix[i][j] = mat[i][j];
+        }
+    }
+}
+
+Matrix & Matrix::operator = (const Matrix & mat) {
+    cout << "operator = (const Matrix & mat)" << endl;
+    int i, j;
+    for(i = 0; i < n_rows; i++) {
+        delete [] matrix[i];
+    }
+    delete [] matrix;
+    n_rows = mat.n_rows;
+    n_cols = mat.n_cols;
+    matrix = new double*[n_rows];
+    for(i = 0; i < n_rows; i++) {
+        matrix[i] = new double[n_cols];
+    }
+    for(i = 0; i < n_rows; i++) {
+        for(j = 0; j < n_cols; j++) {
+            matrix[i][j] = mat[i][j];
+        }
+    }
+    return *this;
 }
 
 Matrix::~Matrix() {
