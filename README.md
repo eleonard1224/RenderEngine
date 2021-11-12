@@ -10,3 +10,8 @@ The render engine incorporates multithreading on Lines 62-85 of `camera.h`.  To 
 
 ## Run Instructions
 `./renderengine inputs.csv`
+
+## C++ 17 Features
+The features of C++ 17 used in this repository are:
+* Lines 11 and 52 of io.cpp - Used std::filesystem::path to read in locations of files
+* Lines 28-30 of matrix.h and Lines 168-185 of matrix.cpp - Used fold expression in a variadic template function

@@ -21,7 +21,7 @@ class Camera {
 private:
     double canvas_width;
     double canvas_height;
-    void calculate_raster_points(double ***camera_points, int start_face, int end_face, int ***raster_points, double pixel_width, double pixel_height);
+    // void calculate_raster_points(double ***camera_points, int start_face, int end_face, int ***raster_points, double pixel_width, double pixel_height);
 public:
     Camera(double canvas_width, double canvas_height);
     template <class MeshElement> void render(const CameraMesh<MeshElement>& camera_mesh, int pixel_width, int pixel_height, string output_file);
@@ -62,24 +62,66 @@ template <class MeshElement> void Camera::render(const CameraMesh<MeshElement>& 
     // Calculate and time raster_points using multiple threads
     auto start = high_resolution_clock::now();
     int n_threads = thread::hardware_concurrency();
-    int *start_faces = new int[n_threads];
-    int *end_faces = new int[n_threads];
+    // int *start_faces = new int[n_threads];
+    // int *end_faces = new int[n_threads];
+    auto start_faces = make_unique<int[]>(n_threads);
+    auto end_faces = make_unique<int[]>(n_threads);
     int n_faces_per_thread = camera_mesh.n_faces/n_threads;
     for(i = 0; i < n_threads; i++) {
         start_faces[i] = n_faces_per_thread*i;
         end_faces[i] = start_faces[i] + n_faces_per_thread;
     }
+    auto calculate_raster_points = [*this, &camera_mesh, &raster_points](int start_face, int end_face, double pixel_width, double pixel_height){
+        int i, j;
+        double normalized_x, normalized_y;
+        for(i = start_face; i < end_face; i++) {
+            for(j = 0; j < 3; j++) {
+                normalized_x = (camera_mesh.camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
+                raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
+                normalized_y = (camera_mesh.camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
+                raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
+            }
+        }
+    };
     vector<thread> threads;
     for (i = 0; i < n_threads; i++) {
-        threads.push_back(thread(&Camera::calculate_raster_points, this, camera_mesh.camera_points, start_faces[i], end_faces[i], raster_points, (double) pixel_width, (double) pixel_height));
+        // threads.push_back(thread(&Camera::calculate_raster_points, this, camera_mesh.camera_points, start_faces[i], end_faces[i], raster_points, (double) pixel_width, (double) pixel_height));
+        // threads.push_back(thread([this, &camera_mesh.camera_points, &raster_points, start_faces[i], end_faces[i], pixel_width, pixel_height] {
+        //     int i, j;
+        //     double normalized_x, normalized_y;
+        //     for(i = start_face; i < end_face; i++) {
+        //         for(j = 0; j < 3; j++) {
+        //             normalized_x = (camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
+        //             raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
+        //             normalized_y = (camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
+        //             raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
+        //         }
+        //     }
+        // }));
+
+        // threads.push_back(thread([*this, &camera_mesh, &raster_points](int start_face, int end_face, double pixel_width, double pixel_height){
+        //     int i, j;
+        //     double normalized_x, normalized_y;
+        //     for(i = start_face; i < end_face; i++) {
+        //         for(j = 0; j < 3; j++) {
+        //             normalized_x = (camera_mesh.camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
+        //             raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
+        //             normalized_y = (camera_mesh.camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
+        //             raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
+        //         }
+        //     }
+        // }, start_faces[i], end_faces[i], (double) pixel_width, (double) pixel_height));
+        threads.push_back(thread(calculate_raster_points,start_faces[i], end_faces[i], (double) pixel_width, (double) pixel_height));
     }
     for (auto &th : threads) {
         th.join();
     }
     // Loop over the remaining faces
-    calculate_raster_points(camera_mesh.camera_points, end_faces[n_threads-1], camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height);
-    delete[] start_faces;
-    delete[] end_faces;
+    // calculate_raster_points(camera_mesh.camera_points, end_faces[n_threads-1], camera_mesh.n_faces, raster_points, (double) pixel_width, (double) pixel_height);
+    calculate_raster_points(end_faces[n_threads-1], camera_mesh.n_faces, (double) pixel_width, (double) pixel_height);
+
+    // delete[] start_faces;
+    // delete[] end_faces;
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time to Calculate Raster Points (microseconds) = " << duration.count() << endl;
@@ -108,18 +150,18 @@ template <class MeshElement> void Camera::render(const CameraMesh<MeshElement>& 
     delete[] raster_points;
 }
 
-void Camera::calculate_raster_points(double ***camera_points, int start_face, int end_face, int ***raster_points, double pixel_width, double pixel_height) {
+// void Camera::calculate_raster_points(double ***camera_points, int start_face, int end_face, int ***raster_points, double pixel_width, double pixel_height) {
 
-    int i, j;
-    double normalized_x, normalized_y;
-    for(i = start_face; i < end_face; i++) {
-        for(j = 0; j < 3; j++) {
-            normalized_x = (camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
-            raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
-            normalized_y = (camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
-            raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
-        }
-    }
-}
+//     int i, j;
+//     double normalized_x, normalized_y;
+//     for(i = start_face; i < end_face; i++) {
+//         for(j = 0; j < 3; j++) {
+//             normalized_x = (camera_points[i][j][0] + (canvas_width/2.0))/canvas_width; 
+//             raster_points[i][j][0] = int(floor(normalized_x*pixel_width));
+//             normalized_y = (camera_points[i][j][1] + (canvas_height/2.0))/canvas_height; 
+//             raster_points[i][j][1] = int(floor((1.0-normalized_y)*pixel_height));
+//         }
+//     }
+// }
 
 #endif

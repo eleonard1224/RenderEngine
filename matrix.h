@@ -24,4 +24,9 @@ public:
 // For now, implement the inverse method only on 4x4 matrices
 Matrix inverse(const Matrix& m);
 
+// Example use of variadic template function with folding
+template <typename ... Args> auto Multiply(Args... args) {
+    return (1 * ... * args);
+}
+
 #endif

@@ -7,7 +7,8 @@ void Input::read_inputs(const string& input_file, string& mesh_file, double& Rx,
     int& pixel_width, int& pixel_height) {
 
     // Read mesh information into csv_contents
-    string filename(input_file);
+    // string filename(input_file);
+    filesystem::path filename(input_file);
     string file_contents;
     std::map<int, std::vector<string>> csv_contents;
     char delimiter = ':';
@@ -48,7 +49,7 @@ void Input::read_inputs(const string& input_file, string& mesh_file, double& Rx,
 std::map<int, std::vector<string>> Input::read_mesh(const string& mesh_file) {
 
     // Read mesh information into csv_contents
-    string filename(mesh_file);
+    filesystem::path filename(mesh_file);
     string file_contents;
     std::map<int, std::vector<string>> csv_contents;
     char delimiter = ',';
