@@ -7,7 +7,6 @@ void Input::read_inputs(const string& input_file, string& mesh_file, double& Rx,
     int& pixel_width, int& pixel_height) {
 
     // Read mesh information into csv_contents
-    // string filename(input_file);
     filesystem::path filename(input_file);
     string file_contents;
     std::map<int, std::vector<string>> csv_contents;

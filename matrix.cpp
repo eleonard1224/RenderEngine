@@ -6,7 +6,6 @@ using namespace std;
 // Matrix definitions
 
 Matrix::Matrix() {
-    // cout << "Matrix()" << endl;    
     n_rows = 1;
     n_cols = 1;
     matrix = new double *[n_rows];
@@ -14,7 +13,6 @@ Matrix::Matrix() {
 }
 
 Matrix::Matrix(int n_rows, int n_cols): n_rows(n_rows), n_cols(n_cols) {
-    // cout << "Matrix(int n_rows, int n_cols)" << endl;
     matrix = new double*[n_rows];
     for(int i = 0; i < n_rows; i++) {
         matrix[i] = new double[n_cols];
@@ -22,7 +20,6 @@ Matrix::Matrix(int n_rows, int n_cols): n_rows(n_rows), n_cols(n_cols) {
 }
 
 Matrix::Matrix(const Matrix & mat) {
-    // cout << "Matrix(const Matrix & mat)" << endl;
     n_rows = mat.n_rows;
     n_cols = mat.n_cols;
     int i, j;
@@ -36,7 +33,6 @@ Matrix::Matrix(const Matrix & mat) {
 }
 
 Matrix & Matrix::operator = (const Matrix & mat) {
-    // cout << "operator = (const Matrix & mat)" << endl;
     if (this != &mat) {
         int i, j;
         for(i = 0; i < n_rows; i++) {
@@ -57,7 +53,6 @@ Matrix & Matrix::operator = (const Matrix & mat) {
 }
 
 Matrix::Matrix(Matrix && mat) {
-    // cout << "Matrix(Matrix && mat)" << endl; 
     n_rows = mat.n_rows;
     n_cols = mat.n_cols;
     int i, j;
@@ -73,7 +68,6 @@ Matrix::Matrix(Matrix && mat) {
 }
 
 Matrix & Matrix::operator = (Matrix && mat) {
-    // cout << "operator = (Matrix && mat)" << endl; 
     if (this != &mat) {
         int i, j;
         for(i = 0; i < n_rows; i++) {
@@ -96,7 +90,6 @@ Matrix & Matrix::operator = (Matrix && mat) {
 }
 
 Matrix::~Matrix() {
-    // cout << "~Matrix()" << endl;
     int i;
     if (matrix) {
         for(i = 0; i < n_rows; i++) {
@@ -145,25 +138,6 @@ Matrix inverse(const Matrix& m) {
 
     Matrix im(m.n_rows,m.n_cols);
     double det;
-
-    // double A2323 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
-    // double A1323 = m[2][1] * m[3][3] - m[2][3] * m[3][1];
-    // double A1223 = m[2][1] * m[3][2] - m[2][2] * m[3][1];
-    // double A0323 = m[2][0] * m[3][3] - m[2][3] * m[3][0];
-    // double A0223 = m[2][0] * m[3][2] - m[2][2] * m[3][0];
-    // double A0123 = m[2][0] * m[3][1] - m[2][1] * m[3][0];
-    // double A2313 = m[1][2] * m[3][3] - m[1][3] * m[3][2];
-    // double A1313 = m[1][1] * m[3][3] - m[1][3] * m[3][1];
-    // double A1213 = m[1][1] * m[3][2] - m[1][2] * m[3][1];
-    // double A2312 = m[1][2] * m[2][3] - m[1][3] * m[2][2];
-    // double A1312 = m[1][1] * m[2][3] - m[1][3] * m[2][1];
-    // double A1212 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
-    // double A0313 = m[1][0] * m[3][3] - m[1][3] * m[3][0];
-    // double A0213 = m[1][0] * m[3][2] - m[1][2] * m[3][0];
-    // double A0312 = m[1][0] * m[2][3] - m[1][3] * m[2][0];
-    // double A0212 = m[1][0] * m[2][2] - m[1][2] * m[2][0];
-    // double A0113 = m[1][0] * m[3][1] - m[1][1] * m[3][0];
-    // double A0112 = m[1][0] * m[2][1] - m[1][1] * m[2][0];
 
     double A2323 = Multiply(m[2][2], m[3][3]) - Multiply(m[2][3], m[3][2]);
     double A1323 = Multiply(m[2][1], m[3][3]) - Multiply(m[2][3], m[3][1]);

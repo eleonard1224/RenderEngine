@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <filesystem>
 #include <map>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -14,9 +15,6 @@
 #include <opencv2/highgui/highgui.hpp>
 using namespace std;
 using namespace cv;
-
-#include <filesystem>
-// using namespace std::filesystem;
 
 class Input {
 public:
